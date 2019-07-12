@@ -26,10 +26,7 @@ pip install pipenv
 #### 4. Add .env file with private environments
 
 ```
-create .env file with info
+create .env file with info about yr SECRET_KEY
 in settings:
-    import environ
-    create class object
-    change DATABASE
-
+change SECRET_KEY (SECRET_KEY = os.getenv("SECRET_KEY"))
 ```

@@ -7,7 +7,6 @@ STATUSES = [
     ('paid', 'Paid')
 ]
 
-
 class Order(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     datatime = models.DateTimeField(auto_now_add=True)

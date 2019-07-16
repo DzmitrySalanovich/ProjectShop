@@ -10,14 +10,13 @@ from .serializers import OrderSerializer, CategorySerializer, ProductSerializer,
  
 
 class ProductListAPIView(APIView):
+
     def get(self, request):
         products = Product.objects.all()
         data = ProductSerializer(products, many=True).data
         return Response(data=data)
 
 class ProductsAPIView(APIView):
-#     authentication_classes = ()
-#     permission_classes = ()
 
     def get(self, request, id, *args, **kwargs):
         try:
@@ -28,36 +27,36 @@ class ProductsAPIView(APIView):
         data = ProductSerializer(product).data
         return Response(data=data, status=status.HTTP_200_OK)
 
-
-def product_list(request):
-    if request.method == 'GET':
-        products = Product.objects.filter(STATUSES='Available')
-        serializer = ProductSerializer(products, many=True)
-        return JsonResponse(serializer.data, safe=False)
+class ShopAPIView(APIView):
+    def product_list(self, request):
+        if request.method == 'GET':
+            products = Product.objects.filter(STATUSES='Available')
+            serializer = ProductSerializer(products, many=True)
+            return JsonResponse(serializer.data, safe=False)
     
-def product_list_specific(request):
-    if request.method == 'GET':
-        products_att = Product_att.objects.filter(products=Product.object.all())
-        serializer = ProductSerializer(products_att, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-def order_list(request):
-    if request.method == 'GET':
-        orders = Order.objects.filter()
-        serializer = OrderSerializer(orders, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-def order_spec_list(request):
-    if request.method == 'GET':
-        orders_spec = Order.get_objects(pk)
-        serializer = OrderSerializer(orders_spec, many=True)
-        return JsonResponse(serializer.data, safe=False)
+    def product_list_specific(self, request):
+        if request.method == 'GET':
+            products_att = Product_att.objects.filter(products=Product.object.all())
+            serializer = ProductSerializer(products_att, many=True)
+            return JsonResponse(serializer.data, safe=False)
     
-def order_create_list(request):
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = OrderSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    def order_list(self, request):
+        if request.method == 'GET':
+            orders = Order.objects.all()
+            serializer = OrderSerializer(orders, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+    def order_spec_list(self, request, id, *args, **kwargs):
+        if request.method == 'GET':
+            orders_spec = Order.objects.get(id=id)
+            serializer = OrderSerializer(orders_spec, many=True)
+            return JsonResponse(serializer.data, safe=False)
+    
+    def order_create_list(self, request):
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = OrderSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)

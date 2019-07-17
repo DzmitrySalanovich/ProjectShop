@@ -5,7 +5,7 @@ from .models import Order, Category, Product, Product_att, ListItem, STATUSES
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('id', 'datetime', 'cost', 'cc_number', 'status')
+        fields = ('id', 'cost', 'cc_number', 'status')
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -15,6 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
     class Meta:
         model = Product
         fields = ('id', 'name', 'SKU', 'discount', 'price', 'quantity', 'category')
